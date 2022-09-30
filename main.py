@@ -10,12 +10,14 @@ def store_items():
 
 def directions_to_go():
     rooms = {
-        'Lobby': {'West': 'Secretary Office', 'East': 'East Hallway', 'North': "Press Room"},
+        'Lobby': {'West': 'Secretary Office', 'East': 'East Hallway', 'North': "Press Room", 'Item': 'knife'},
         'Secretary Office': {'South': 'Closest', 'West': 'West Hallway', 'East': 'Lobby', 'North': 'Conference Room'
                              },
         'Closet': {'East': 'Secretary Office', 'Item': 'Gun'},
-        'West Hallway':{'North-East':'Break Room','East':'Secretary Office','Item':'Ammo'},
-        'Conference Room':{'South':'Break Room','Item':'Blue Key','West':'West Hallway','East':'Press Room'}
+        'West Hallway': {'North-East': 'Break Room', 'East': 'Secretary Office', 'Item': 'Ammo'},
+        'Conference Room': {'South': 'Break Room', 'Item': 'Blue Key', 'West': 'West Hallway', 'East': 'Press Room'},
+        'Press Room': {'South': 'Lobby', 'West': 'Conference Room', 'Enemy': 'Zombie 1'},
+        'East Hallway': {'East': 'East Office', 'South West': 'Lobby'}
     }
     pass
 
@@ -37,7 +39,7 @@ def intro_display():
             print(f'Hello,Agent {user_name} welcome to Mission 1: Escape the Police Station')
             time.sleep(3)
             print('My name is Dexter and I am here to guide you on your mission\n'
-                  'You are currently at J Edgar Hoover building and all of your coworkers have turned to zombies\n'
+                  'You are currently at J Edgar Hoover building and one of your coworkers have turned into a zombie\n'
                   'I managed to save you by injecting you with an antidote and giving you an ear piece so I can guide\n'
                   'you out of the police station. Just listen to everything I tell you and you will be fine.')
             time.sleep(5)
@@ -60,7 +62,21 @@ def intro_display():
 
 
 if __name__ == '__main__':
-    intro_display()
+    # intro_display()
     # display_map()
+    playAgain = int(input('Would you like to play Operation Escape Route 1 for yes or 0 for no\n'))
+    while True:
+        try:
+            if playAgain == 1:
+                intro_display()
+                break
+            elif playAgain == 0:
+                print('Thanks for playing, Goodbye.')
+                break
+        except ValueError:
+            print('Please enter valid input!')
+
+
+
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
