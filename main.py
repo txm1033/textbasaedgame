@@ -1,53 +1,78 @@
+import time
+import random
+
 from PIL import Image
 
 list_of_items = {1: 'knife', 2: 'gun', 3: 'ammo', 4: 'Map', 5: 'Red Key', 6: 'Blue Key'}
 
 
+def zombie_movement():
+    random.randint()
+    pass
+
+
 def store_items(items):
-    items = {'test', 'test2'}
+    items = ['test', 'test2', 'Map']
     return items
 
 
 def directions_to_go():
-    player_location = 'Lobby'
-    player_location = input('Enter where you like to go. Remember you must find the map first to be able to'
-                            'display it. You are currently in the Lobby')
+    global location
 
     rooms = {
         'Lobby': {'West': 'Secretary Office', 'East': 'East Hallway', 'North': "Press Room", 'Item': 'knife'},
         'Secretary Office': {'South': 'Closest', 'West': 'West Hallway', 'East': 'Lobby', 'North': 'Conference Room'
                              },
-        'Closet': {'East': 'Secretary Office', 'Item': 'Gun'},
+        'Closet': {'East': 'Secretary Office', 'Item': 'Gun', 'Item2': 'Red Key'},
         'West Hallway': {'North-East': 'Break Room', 'East': 'Secretary Office', 'Item': 'Ammo'},
         'Conference Room': {'South': 'Break Room', 'Item': 'Blue Key', 'West': 'West Hallway', 'East': 'Press Room'},
         'Press Room': {'South': 'Lobby', 'West': 'Conference Room', 'Enemy': 'Zombie 1'},
         'East Hallway': {'East': 'East Office', 'South West': 'Lobby'}
     }
-    for location in rooms:
-        if location == 'Lobby':
-            print(rooms[location])
-            if 'Item' in 'Lobby':
-                print(f'You obtained ')
-    return player_location
+    room_copy = rooms.copy()
+    while True:
+        player_location = input('Enter where you like to go. Remember you must find the map first to be able to'
+                                ' display it. You are currently in the Lobby')
+        if player_location == 'Lobby':
+            user_item = input(f'You are currently in the: {player_location}. You see something shiny in the corner. '
+                              f'Do you wish to '
+                              f' take it? Type Yes or No')
+            if user_item.capitalize() == 'Yes':
+                print('You took the ammo')
+        elif player_location == 'Secretary Office':
+            user_item = input(
+                f'You are currently in the: {player_location}. You see an open closet with a foul stench so you '
+                f'investigate it. \n'
+                f'Upon investigation, you noticed a gun in a dead zombie\'s hand and you find a Red Key\n'
+                f' take it? Type Yes or No')
+            if user_item.capitalize() == 'Yes':
+                print('You took the red key and the gun')
+
+        return player_location
 
 
 def display_map():
-    user_input = input('Please type Map to display the map')
+    user_input = input('Please type Map to display the map.')
     current_inventory = store_items(user_input)
-    for items in current_inventory:
-        while True:
-            if user_input not in items:
-                print('hmm...I can\'t seem to find this item in your inventory',end="")
-                break
+    for items in range(len(current_inventory)):
+        if user_input not in current_inventory[items] and user_input == 'Map':
+            items += 1
+        else:
+            if 'Map' in current_inventory[items] and user_input == 'Map':
+                try:
+                    im = Image.open("map/map.png")
+                    print('Currently opening your map for you')
+                    time.sleep(3)
+                    im.show()
+                    break
+                except IOError:
+                    print('It seems we are having issues opening this file, try again later.')
+                    break
             else:
-                if 'Map' in list_of_items.values() and user_input == 'Map':
-                    try:
-                        im = Image.open("map/map.png")
-                        im.show()
-                    except IOError:
-                        print('It seems we are having issues opening this file, try again later.')
-                else:
-                    print('Invalid input, please try again')
+                print('Invalid input, please try again')
+                break
+
+    directions_to_go()
 
 
 def intro_display():
@@ -79,6 +104,7 @@ def intro_display():
                   'This '
                   'is\n '
                   'a matter of urgency')
+    directions_to_go()
 
 
 if __name__ == '__main__':
@@ -95,5 +121,5 @@ if __name__ == '__main__':
     #     except ValueError:
     #         print('Please enter valid input!')
 
-    display_map()
+    directions_to_go()
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
