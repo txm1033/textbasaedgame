@@ -1,19 +1,22 @@
-import time
 import random
+import time
 
 from PIL import Image
 
 list_of_items = ['knife', 'gun', 'ammo', 'Map', 'Red Key', 'Blue Key']
-zombie = 1
+zombie = 2
 rooms = {
     'Lobby': {'West': 'Secretary Office', 'East': 'East Hallway', 'North': "Press Room", 'Item': 'knife'},
     'Secretary Office': {'South': 'Closest', 'West': 'West Hallway', 'East': 'Lobby', 'North': 'Conference Room'
                          },
-    'Closet': {'East': 'Secretary Office', 'Item': 'Gun', 'Item2': 'Red Key'},
+    'Closet': {'East': 'Secretary Office', 'Item': 'Gun'},
     'West Hallway': {'North-East': 'Break Room', 'East': 'Secretary Office', 'Item': 'Ammo'},
     'Conference Room': {'South': 'Break Room', 'Item': 'Blue Key', 'West': 'West Hallway', 'East': 'Press Room'},
     'Press Room': {'South': 'Lobby', 'West': 'Conference Room', 'Enemy': 'Zombie 1'},
-    'East Hallway': {'East': 'East Office', 'South West': 'Lobby'}
+    'East Hallway': {'East': 'East Office', 'South': 'Lobby'},
+    'East Office': {'South': 'Exit', 'West': 'East Hallway'},
+    'Library': {'South': 'Secretary Office'},
+    'Break Room': {'North': 'Conference Room', 'West': 'West Hallway', 'Item2': 'Red Key'}
 }
 
 user_inventory = []
@@ -25,10 +28,11 @@ def zombie_movement():
 
 
 def store_items(items):
-    pass
-
-
-def first_location():
+    global user_inventory
+    while user_inventory == []:
+        for i in items:
+            inventory = i.split()
+            user_inventory = inventory.append()
     return user_inventory
 
 
@@ -55,6 +59,9 @@ def display_map():
 
 
 def intro_display():
+    list_of_rooms = ['Lobby', 'Library', 'Secretary Office', 'Conference Room', 'Break Room', 'Press Room',
+                     'East Office', 'Closet']
+    random_room = random.choices(list_of_rooms)
     while True:
         user_name = input('State your name?\n')
         if user_name.isalpha():
@@ -65,7 +72,9 @@ def intro_display():
                   'You are currently at J Edgar Hoover building and one of your coworkers have turned into a zombie\n'
                   'I managed to save you by injecting you with an antidote and giving you an ear piece so I can guide\n'
                   'you out of the police station. Just listen to everything I tell you and you will be fine.')
-            time.sleep(5)
+            time.sleep(3)
+            print('You will start in a different room each time you respawn')
+            time.sleep(3)
             print('You have 3 objectives: \n\t'
                   'Collect 6 items in the map\n\t'
                   'Kill zombies\n\t'
@@ -74,39 +83,31 @@ def intro_display():
             print('You will need to find the following\t')
             for items in list_of_items:
                 print('\t', items)
-
+            time.sleep(3)
             print('If you run into any zombies before you have collected a knife or gun with ammo you will DIE.')
-            break
         else:
             print('Uh-Oh, it seems you entered something other than letters, please try again or you will be eaten! '
                   'This '
                   'is\n '
                   'a matter of urgency')
+        break
+    room_locations(user_name,user_inventory,random_room)
 
-    play = int(input('Would you like to play Operation Escape Route 1 for yes or 0 for no\n'))
-    while True:
-        try:
-            list_of_rooms = ['Lobby', 'Library', 'Secretary', 'Conference Room', 'Break Room', 'Press Room',
-                             'East Office', 'Closet']
-            random_room = random.choices(list_of_rooms)
-            print(f'you are currently in the {random_room}')
-            if play == 1:
-                user_directions = ['West', 'East', 'South', 'North']
-                user_direction = input(
-                    'Please enter where you would like to go. Enter go and the direction you would like to '
-                    f'go. Here are your choices\n{user_directions}')
-                try:
-                    if user_direction.capitalize() == 'go west'.capitalize():
-                        print(f'You selected to {user_direction}')
-                    else:
-                        print('incorrect input')
-                except ValueError:
-                    print('Please enter valid input')
-            elif play == 0:
-                print('Thanks for playing, Goodbye.')
-                break
-        except ValueError:
-            print('Please enter valid input!')
+
+
+
+
+def room_locations(player_name, current_inventory, current_room):
+    # status_of_player = f"Name: {player_name}, Inventory: {current_inventory}, Current Room: {current_room}"
+    # print(status_of_player)
+    directions = ['East','West','South','North']
+    user_direction = input("Choose where you would like to go. You can type in 'go' followed by one of the following"
+                       f"{directions} ")
+    room_copy = rooms[:]
+
+
+
+
 
 
 if __name__ == '__main__':
