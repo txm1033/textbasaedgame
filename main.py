@@ -90,8 +90,8 @@ def intro_display():
                   'This '
                   'is\n '
                   'a matter of urgency')
-        break
-    room_locations(user_name,user_inventory,random_room)
+
+        room_locations(user_name,user_inventory,random_room)
 
 
 
